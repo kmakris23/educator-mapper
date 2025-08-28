@@ -1,0 +1,31 @@
+<div class="region-selector">
+  <div *ngIf="isLoading" class="loading">
+    Φόρτωση περιοχών... / Loading regions...
+  </div>
+
+  <div *ngIf="!isLoading && regions.length === 0" class="no-data">
+    Δεν βρέθηκαν περιοχές / No regions found
+  </div>
+
+  <div *ngIf="!isLoading && regions.length > 0" class="regions-grid">
+    <button 
+      *ngFor="let region of regions" 
+      class="region-card"
+      [class.selected]="isSelected(region)"
+      (click)="selectRegion(region)"
+      type="button">
+      
+      <div class="region-name-greek">{{ region.name }}</div>
+      <div class="region-name-english">{{ region.nameEnglish }}</div>
+      
+      <div *ngIf="isSelected(region)" class="selected-indicator">
+        ✓ Επιλεγμένο / Selected
+      </div>
+    </button>
+  </div>
+
+  <div *ngIf="selectedRegion" class="selected-region-info">
+    <p><strong>Επιλεγμένη περιοχή / Selected region:</strong></p>
+    <p>{{ selectedRegion.name }} / {{ selectedRegion.nameEnglish }}</p>
+  </div>
+</div>

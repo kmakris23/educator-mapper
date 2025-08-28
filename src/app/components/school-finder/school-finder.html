@@ -1,0 +1,48 @@
+<div class="school-finder">
+  <div *ngIf="!municipalityId" class="no-selection">
+    Παρακαλώ επιλέξτε πρώτα έναν δήμο / Please select a municipality first
+  </div>
+
+  <div *ngIf="municipalityId && isLoading" class="loading">
+    Φόρτωση σχολείων... / Loading schools...
+  </div>
+
+  <div *ngIf="municipalityId && !isLoading && schools.length === 0" class="no-data">
+    Δεν βρέθηκαν σχολεία για τον επιλεγμένο δήμο / No schools found for selected municipality
+  </div>
+
+  <div *ngIf="municipalityId && !isLoading && schools.length > 0" class="schools-list">
+    <div 
+      *ngFor="let school of schools" 
+      class="school-card"
+      [class.selected]="isSelected(school)"
+      (click)="selectSchool(school)">
+      
+      <div class="school-header">
+        <div class="school-name-greek">{{ school.name }}</div>
+        <div class="school-type">{{ getSchoolTypeLabel(school.type) }}</div>
+      </div>
+      
+      <div class="school-details">
+        <div class="school-name-english">{{ school.nameEnglish }}</div>
+        <div class="school-address">📍 {{ school.address }}</div>
+        
+        <div *ngIf="school.coordinates" class="school-coordinates">
+          <small>Συντεταγμένες / Coordinates: {{ school.coordinates.lat }}, {{ school.coordinates.lng }}</small>
+        </div>
+      </div>
+      
+      <div *ngIf="isSelected(school)" class="selected-indicator">
+        ✓ Επιλεγμένο σχολείο / Selected school
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedSchool" class="selected-school-info">
+    <h4>Επιλεγμένο Σχολείο / Selected School</h4>
+    <div><strong>{{ selectedSchool.name }}</strong></div>
+    <div><em>{{ selectedSchool.nameEnglish }}</em></div>
+    <div>📍 {{ selectedSchool.address }}</div>
+    <div>🏫 {{ getSchoolTypeLabel(selectedSchool.type) }}</div>
+  </div>
+</div>

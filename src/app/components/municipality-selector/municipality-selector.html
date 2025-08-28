@@ -1,0 +1,35 @@
+<div class="municipality-selector">
+  <div *ngIf="!regionId" class="no-selection">
+    Παρακαλώ επιλέξτε πρώτα μια περιοχή / Please select a region first
+  </div>
+
+  <div *ngIf="regionId && isLoading" class="loading">
+    Φόρτωση δήμων... / Loading municipalities...
+  </div>
+
+  <div *ngIf="regionId && !isLoading && municipalities.length === 0" class="no-data">
+    Δεν βρέθηκαν δήμοι για την επιλεγμένη περιοχή / No municipalities found for selected region
+  </div>
+
+  <div *ngIf="regionId && !isLoading && municipalities.length > 0" class="municipalities-grid">
+    <button 
+      *ngFor="let municipality of municipalities" 
+      class="municipality-card"
+      [class.selected]="isSelected(municipality)"
+      (click)="selectMunicipality(municipality)"
+      type="button">
+      
+      <div class="municipality-name-greek">{{ municipality.name }}</div>
+      <div class="municipality-name-english">{{ municipality.nameEnglish }}</div>
+      
+      <div *ngIf="isSelected(municipality)" class="selected-indicator">
+        ✓ Επιλεγμένο / Selected
+      </div>
+    </button>
+  </div>
+
+  <div *ngIf="selectedMunicipality" class="selected-municipality-info">
+    <p><strong>Επιλεγμένος δήμος / Selected municipality:</strong></p>
+    <p>{{ selectedMunicipality.name }} / {{ selectedMunicipality.nameEnglish }}</p>
+  </div>
+</div>
