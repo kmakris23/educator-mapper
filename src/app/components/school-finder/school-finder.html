@@ -1,48 +1,95 @@
 <div class="school-finder">
-  <div *ngIf="!municipalityId" class="no-selection">
-    Παρακαλώ επιλέξτε πρώτα έναν δήμο / Please select a municipality first
+  <!-- No Municipality Selected State -->
+  <div *ngIf="!municipalityId" class="text-center py-6 px-4 bg-blue-50 rounded-lg border border-blue-200">
+    <i class="pi pi-info-circle text-blue-500 text-2xl mb-2"></i>
+    <p class="text-blue-700 text-sm">
+      Παρακαλώ επιλέξτε πρώτα έναν δήμο / Please select a municipality first
+    </p>
   </div>
 
-  <div *ngIf="municipalityId && isLoading" class="loading">
-    Φόρτωση σχολείων... / Loading schools...
+  <!-- Loading State -->
+  <div *ngIf="municipalityId && isLoading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+    <p class="text-gray-600 text-sm mt-3">
+      Φόρτωση σχολείων... / Loading schools...
+    </p>
   </div>
 
-  <div *ngIf="municipalityId && !isLoading && schools.length === 0" class="no-data">
-    Δεν βρέθηκαν σχολεία για τον επιλεγμένο δήμο / No schools found for selected municipality
+  <!-- No Data State -->
+  <div 
+    *ngIf="municipalityId && !isLoading && schools.length === 0" 
+    class="text-center py-6 px-4 bg-amber-50 rounded-lg border border-amber-200">
+    <i class="pi pi-exclamation-triangle text-amber-500 text-2xl mb-2"></i>
+    <p class="text-amber-700 text-sm">
+      Δεν βρέθηκαν σχολεία για τον επιλεγμένο δήμο / No schools found for selected municipality
+    </p>
   </div>
 
-  <div *ngIf="municipalityId && !isLoading && schools.length > 0" class="schools-list">
+  <!-- Schools List -->
+  <div *ngIf="municipalityId && !isLoading && schools.length > 0" class="max-h-96 overflow-y-auto space-y-3">
     <div 
       *ngFor="let school of schools" 
-      class="school-card"
-      [class.selected]="isSelected(school)"
-      (click)="selectSchool(school)">
+      (click)="selectSchool(school)"
+      class="p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      [class]="isSelected(school) 
+        ? 'bg-green-50 border-green-500' 
+        : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'">
       
-      <div class="school-header">
-        <div class="school-name-greek">{{ school.name }}</div>
-        <div class="school-type">{{ getSchoolTypeLabel(school.type) }}</div>
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3">
+        <div class="flex-1 mb-2 sm:mb-0">
+          <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+            {{ school.name }}
+          </h4>
+          <p class="text-xs text-gray-600 italic">
+            {{ school.nameEnglish }}
+          </p>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 whitespace-nowrap">
+          {{ getSchoolTypeLabel(school.type) }}
+        </span>
       </div>
       
-      <div class="school-details">
-        <div class="school-name-english">{{ school.nameEnglish }}</div>
-        <div class="school-address">📍 {{ school.address }}</div>
+      <div class="space-y-1 text-sm text-gray-600">
+        <div class="flex items-start">
+          <i class="pi pi-map-marker text-gray-400 mr-2 mt-0.5 flex-shrink-0"></i>
+          <span>{{ school.address }}</span>
+        </div>
         
-        <div *ngIf="school.coordinates" class="school-coordinates">
-          <small>Συντεταγμένες / Coordinates: {{ school.coordinates.lat }}, {{ school.coordinates.lng }}</small>
+        <div *ngIf="school.coordinates" class="flex items-center">
+          <i class="pi pi-compass text-gray-400 mr-2 flex-shrink-0"></i>
+          <span class="text-xs">
+            Συντεταγμένες / Coordinates: {{ school.coordinates.lat }}, {{ school.coordinates.lng }}
+          </span>
         </div>
       </div>
       
-      <div *ngIf="isSelected(school)" class="selected-indicator">
-        ✓ Επιλεγμένο σχολείο / Selected school
+      <div *ngIf="isSelected(school)" class="mt-3 pt-3 border-t border-green-200">
+        <div class="flex items-center text-green-600 text-sm font-medium">
+          <i class="pi pi-check mr-2"></i>
+          Επιλεγμένο σχολείο / Selected school
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="selectedSchool" class="selected-school-info">
-    <h4>Επιλεγμένο Σχολείο / Selected School</h4>
-    <div><strong>{{ selectedSchool.name }}</strong></div>
-    <div><em>{{ selectedSchool.nameEnglish }}</em></div>
-    <div>📍 {{ selectedSchool.address }}</div>
-    <div>🏫 {{ getSchoolTypeLabel(selectedSchool.type) }}</div>
+  <!-- Selected School Info -->
+  <div 
+    *ngIf="selectedSchool" 
+    class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+    <h4 class="font-semibold text-green-800 mb-3">
+      Επιλεγμένο Σχολείο / Selected School
+    </h4>
+    <div class="space-y-2 text-sm text-green-700">
+      <div class="font-medium">{{ selectedSchool.name }}</div>
+      <div class="italic">{{ selectedSchool.nameEnglish }}</div>
+      <div class="flex items-start">
+        <i class="pi pi-map-marker mr-2 mt-0.5 flex-shrink-0"></i>
+        {{ selectedSchool.address }}
+      </div>
+      <div class="flex items-center">
+        <i class="pi pi-building mr-2 flex-shrink-0"></i>
+        {{ getSchoolTypeLabel(selectedSchool.type) }}
+      </div>
+    </div>
   </div>
 </div>

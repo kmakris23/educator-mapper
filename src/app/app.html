@@ -1,82 +1,98 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Educator Mapper - Χαρτογράφηση Θέσεων Εκπαιδευτικών</title>
-</head>
-<body>
-  <div class="container">
-    <header class="card">
-      <h1>Educator Mapper</h1>
-      <p>Βρείτε θέσεις εκπαιδευτικών και τρόπους μετακίνησης σε όλη την Ελλάδα</p>
-      <p><em>Find teaching positions and transportation options across Greece</em></p>
-    </header>
+<div class="min-h-screen bg-gray-50">
+  <div class="container-app py-4 sm:py-8">
+    <!-- Header -->
+    <div class="card-app">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+        Educator Mapper
+      </h1>
+      <p class="text-base sm:text-lg text-gray-700 mb-2">
+        Βρείτε θέσεις εκπαιδευτικών και τρόπους μετακίνησης σε όλη την Ελλάδα
+      </p>
+      <p class="text-sm sm:text-base text-gray-600 italic">
+        Find teaching positions and transportation options across Greece
+      </p>
+    </div>
 
-    <main class="grid grid-2">
-      <div class="card">
-        <h2>Επιλογή Περιοχής / Region Selection</h2>
+    <!-- Main Selection Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div class="card-app">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Επιλογή Περιοχής / Region Selection
+        </h2>
         <app-region-selector 
           (regionSelected)="onRegionSelected($event)"
           [selectedRegion]="selectedRegion">
         </app-region-selector>
       </div>
 
-      <div class="card">
-        <h2>Επιλογή Δήμου / Municipality Selection</h2>
+      <div class="card-app">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Επιλογή Δήμου / Municipality Selection
+        </h2>
         <app-municipality-selector 
           [regionId]="selectedRegion?.id || null"
           (municipalitySelected)="onMunicipalitySelected($event)"
           [selectedMunicipality]="selectedMunicipality">
         </app-municipality-selector>
       </div>
-    </main>
+    </div>
 
-    <section class="grid grid-2" *ngIf="selectedMunicipality">
-      <div class="card">
-        <h2>Διαθέσιμα Σχολεία / Available Schools</h2>
+    <!-- School and Transportation Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8" *ngIf="selectedMunicipality">
+      <div class="card-app">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Διαθέσιμα Σχολεία / Available Schools
+        </h2>
         <app-school-finder 
           [municipalityId]="selectedMunicipality ? selectedMunicipality.id : null"
           (schoolSelected)="onSchoolSelected($event)">
         </app-school-finder>
       </div>
 
-      <div class="card">
-        <h2>Πληροφορίες Μετακίνησης / Transportation Info</h2>
+      <div class="card-app">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Πληροφορίες Μετακίνησης / Transportation Info
+        </h2>
         <app-transportation-info 
           [selectedSchool]="selectedSchool"
           [userLocation]="userLocation">
         </app-transportation-info>
       </div>
-    </section>
+    </div>
 
-    <section class="card" *ngIf="!selectedRegion">
-      <h3>Οδηγίες Χρήσης / Instructions</h3>
-      <ol>
+    <!-- Instructions Section -->
+    <div class="card-app" *ngIf="!selectedRegion">
+      <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+        Οδηγίες Χρήσης / Instructions
+      </h3>
+      <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
         <li>Επιλέξτε την περιφέρεια που σας ενδιαφέρει / Select the region of interest</li>
         <li>Επιλέξτε τον δήμο ή νομό / Choose the municipality or prefecture</li>
         <li>Δείτε τα διαθέσιμα σχολεία / View available schools</li>
         <li>Λάβετε πληροφορίες για τους τρόπους μετακίνησης / Get transportation information</li>
       </ol>
       
-      <div class="form-group">
-        <label for="user-location">Η τοποθεσία σας (προαιρετικό) / Your Location (optional):</label>
+      <div class="mb-4">
+        <label for="user-location" class="block text-sm font-medium text-gray-700 mb-2">
+          Η τοποθεσία σας (προαιρετικό) / Your Location (optional):
+        </label>
         <input 
           type="text" 
           id="user-location"
-          class="form-control" 
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
           [(ngModel)]="userLocation" 
           placeholder="π.χ. Αθήνα, Θεσσαλονίκη / e.g. Athens, Thessaloniki">
       </div>
-    </section>
+    </div>
 
-    <footer class="card" style="text-align: center; margin-top: 40px;">
-      <p><small>
+    <!-- Footer -->
+    <div class="card-app text-center">
+      <p class="text-sm text-gray-600">
         Educator Mapper - Εργαλείο εύρεσης θέσεων εκπαιδευτικών και μετακίνησης<br>
-        <em>Tool for finding teaching positions and transportation options</em>
-      </small></p>
-    </footer>
+        <span class="italic">Tool for finding teaching positions and transportation options</span>
+      </p>
+    </div>
   </div>
 
   <router-outlet></router-outlet>
-</body>
-</html>
+</div>
