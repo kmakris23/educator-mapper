@@ -35,7 +35,7 @@
       <div class="card">
         <h2>Διαθέσιμα Σχολεία / Available Schools</h2>
         <app-school-finder 
-          [municipalityId]="selectedMunicipality?.id || null"
+          [municipalityId]="selectedMunicipality ? selectedMunicipality.id : null"
           (schoolSelected)="onSchoolSelected($event)">
         </app-school-finder>
       </div>
