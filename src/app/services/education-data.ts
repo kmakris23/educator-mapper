@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Region, Municipality, School } from '../models/education-data.models';
+import { atticaMunicipalities, atticaSchools } from '../data/complete_attica_data';
 
 @Injectable({
   providedIn: 'root'
@@ -34,16 +35,8 @@ export class EducationDataService {
     { id: 'xanthi', name: 'Ξάνθης', nameEnglish: 'Xanthi', regionId: 'eastern-macedonia-thrace' },
     { id: 'rodopi', name: 'Ροδόπης', nameEnglish: 'Rodopi', regionId: 'eastern-macedonia-thrace' },
     
-    // Attica
-    { id: 'athens-a', name: 'Α\' Αθήνας', nameEnglish: 'Athens A', regionId: 'attica' },
-    { id: 'athens-b', name: 'Β\' Αθήνας', nameEnglish: 'Athens B', regionId: 'attica' },
-    { id: 'athens-c', name: 'Γ\' Αθήνας', nameEnglish: 'Athens C', regionId: 'attica' },
-    { id: 'athens-d', name: 'Δ\' Αθήνας', nameEnglish: 'Athens D', regionId: 'attica' },
-    { id: 'eastern-attica', name: 'Ανατ. Αττικής', nameEnglish: 'Eastern Attica', regionId: 'attica' },
-    { id: 'western-attica', name: 'Δυτ. Αττικής', nameEnglish: 'Western Attica', regionId: 'attica' },
-    { id: 'piraeus-a', name: 'Α\' Πειραιά', nameEnglish: 'Piraeus A', regionId: 'attica' },
-    { id: 'piraeus-b', name: 'Β\' Πειραιά', nameEnglish: 'Piraeus B', regionId: 'attica' },
-    { id: 'piraeus-c', name: 'Γ\' Πειραιά', nameEnglish: 'Piraeus C', regionId: 'attica' },
+    // Attica - Real municipalities from Ministry of Education data
+    ...atticaMunicipalities,
     
     // Northern Aegean
     { id: 'lesbos-a', name: 'Α\' Λέσβου', nameEnglish: 'Lesbos A', regionId: 'northern-aegean' },
@@ -159,34 +152,9 @@ export class EducationDataService {
       type: 'primary' 
     },
     
-    // Attica schools
-    { 
-      id: 'school-athens-1', 
-      name: '1ο Δημοτικό Σχολείο Αθηνών', 
-      nameEnglish: '1st Primary School of Athens', 
-      municipalityId: 'athens-a', 
-      address: 'Ακαδημίας 10, Αθήνα',
-      coordinates: { lat: 37.9838, lng: 23.7275 },
-      type: 'primary' 
-    },
-    { 
-      id: 'school-athens-2', 
-      name: '2ο Δημοτικό Σχολείο Αθηνών', 
-      nameEnglish: '2nd Primary School of Athens', 
-      municipalityId: 'athens-b', 
-      address: 'Πανεπιστημίου 15, Αθήνα',
-      coordinates: { lat: 37.9722, lng: 23.7367 },
-      type: 'primary' 
-    },
-    { 
-      id: 'school-piraeus-1', 
-      name: '1ο Δημοτικό Σχολείο Πειραιά', 
-      nameEnglish: '1st Primary School of Piraeus', 
-      municipalityId: 'piraeus-a', 
-      address: 'Ηρώων Πολυτεχνείου 25, Πειραιάς',
-      coordinates: { lat: 37.9420, lng: 23.6467 },
-      type: 'primary' 
-    },
+    
+    // Attica schools - Real schools from Ministry of Education data  
+    ...atticaSchools,
     
     // Northern Aegean schools
     { 
