@@ -1,0 +1,74 @@
+<div class="transportation-info">
+  <div *ngIf="!selectedSchool" class="no-selection">
+    Παρακαλώ επιλέξτε ένα σχολείο για να δείτε τις επιλογές μετακίνησης
+    <br>
+    <em>Please select a school to view transportation options</em>
+  </div>
+
+  <div *ngIf="selectedSchool && isLoading" class="loading">
+    Υπολογισμός διαδρομών... / Calculating routes...
+  </div>
+
+  <div *ngIf="selectedSchool && !isLoading && routeInfo" class="route-info">
+    <div class="route-summary">
+      <h4>Πληροφορίες Διαδρομής / Route Information</h4>
+      <div class="route-details">
+        <div><strong>Από / From:</strong> {{ routeInfo.from }}</div>
+        <div><strong>Προς / To:</strong> {{ routeInfo.to }}</div>
+        <div><strong>Απόσταση / Distance:</strong> {{ routeInfo.distance }}</div>
+        <div><strong>Εκτιμώμενος χρόνος / Estimated time:</strong> {{ routeInfo.estimatedTime }}</div>
+      </div>
+    </div>
+
+    <div class="transportation-options">
+      <h4>Επιλογές Μετακίνησης / Transportation Options</h4>
+      
+      <div *ngIf="transportationOptions.length === 0" class="no-options">
+        Δεν βρέθηκαν επιλογές μετακίνησης / No transportation options found
+      </div>
+
+      <div *ngFor="let option of transportationOptions" class="transport-option">
+        <div class="option-header">
+          <span class="transport-icon">{{ getTransportationIcon(option.type) }}</span>
+          <div class="option-info">
+            <div class="option-name">{{ option.name }}</div>
+            <div class="option-type">{{ getTransportationTypeLabel(option.type) }}</div>
+          </div>
+          <div class="option-details">
+            <div class="duration">⏱️ {{ option.duration }}</div>
+            <div class="cost" *ngIf="option.cost">💰 {{ option.cost }}</div>
+          </div>
+        </div>
+        
+        <div class="option-description">
+          {{ option.description }}
+        </div>
+
+        <div class="option-route" *ngIf="option.route && option.route.length > 0">
+          <strong>Διαδρομή / Route:</strong>
+          <div class="route-steps">
+            <span *ngFor="let step of option.route; let last = last" class="route-step">
+              {{ step }}<span *ngIf="!last"> → </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-section">
+      <h4>Συμβουλές / Tips</h4>
+      <ul>
+        <li>Ελέγξτε τα δρομολόγια πριν την αναχώρηση / Check schedules before departure</li>
+        <li>Κρατήστε εφεδρική επιλογή μετακίνησης / Keep a backup transportation option</li>
+        <li>Υπολογίστε επιπλέον χρόνο για απρόβλεπτα / Allow extra time for unexpected delays</li>
+        <li>Χρησιμοποιήστε εφαρμογές για πραγματικό χρόνο / Use apps for real-time information</li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="selectedSchool && !isLoading && !routeInfo" class="error">
+    Σφάλμα στον υπολογισμό της διαδρομής. Παρακαλώ δοκιμάστε ξανά.
+    <br>
+    <em>Error calculating route. Please try again.</em>
+  </div>
+</div>
