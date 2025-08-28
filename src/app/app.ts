@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
 import { RegionSelectorComponent } from './components/region-selector/region-selector';
 import { MunicipalitySelectorComponent } from './components/municipality-selector/municipality-selector';
 import { SchoolFinderComponent } from './components/school-finder/school-finder';
@@ -14,6 +15,7 @@ import { Region, Municipality, School } from './models/education-data.models';
     RouterOutlet, 
     CommonModule, 
     FormsModule,
+    CardModule,
     RegionSelectorComponent,
     MunicipalitySelectorComponent,
     SchoolFinderComponent,
