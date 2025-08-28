@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50">
   <div class="container-app py-4 sm:py-8">
     <!-- Header -->
-    <p-card class="mb-6 sm:mb-8">
+    <div class="card-app">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
         Educator Mapper
       </h1>
@@ -11,11 +11,11 @@
       <p class="text-sm sm:text-base text-gray-600 italic">
         Find teaching positions and transportation options across Greece
       </p>
-    </p-card>
+    </div>
 
     <!-- Main Selection Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-      <p-card>
+      <div class="card-app">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Επιλογή Περιοχής / Region Selection
         </h2>
@@ -23,9 +23,9 @@
           (regionSelected)="onRegionSelected($event)"
           [selectedRegion]="selectedRegion">
         </app-region-selector>
-      </p-card>
+      </div>
 
-      <p-card>
+      <div class="card-app">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Επιλογή Δήμου / Municipality Selection
         </h2>
@@ -34,12 +34,12 @@
           (municipalitySelected)="onMunicipalitySelected($event)"
           [selectedMunicipality]="selectedMunicipality">
         </app-municipality-selector>
-      </p-card>
+      </div>
     </div>
 
     <!-- School and Transportation Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8" *ngIf="selectedMunicipality">
-      <p-card>
+      <div class="card-app">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Διαθέσιμα Σχολεία / Available Schools
         </h2>
@@ -47,9 +47,9 @@
           [municipalityId]="selectedMunicipality ? selectedMunicipality.id : null"
           (schoolSelected)="onSchoolSelected($event)">
         </app-school-finder>
-      </p-card>
+      </div>
 
-      <p-card>
+      <div class="card-app">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Πληροφορίες Μετακίνησης / Transportation Info
         </h2>
@@ -57,11 +57,11 @@
           [selectedSchool]="selectedSchool"
           [userLocation]="userLocation">
         </app-transportation-info>
-      </p-card>
+      </div>
     </div>
 
     <!-- Instructions Section -->
-    <p-card *ngIf="!selectedRegion">
+    <div class="card-app" *ngIf="!selectedRegion">
       <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
         Οδηγίες Χρήσης / Instructions
       </h3>
@@ -83,15 +83,15 @@
           [(ngModel)]="userLocation" 
           placeholder="π.χ. Αθήνα, Θεσσαλονίκη / e.g. Athens, Thessaloniki">
       </div>
-    </p-card>
+    </div>
 
     <!-- Footer -->
-    <p-card class="text-center">
+    <div class="card-app text-center">
       <p class="text-sm text-gray-600">
         Educator Mapper - Εργαλείο εύρεσης θέσεων εκπαιδευτικών και μετακίνησης<br>
         <span class="italic">Tool for finding teaching positions and transportation options</span>
       </p>
-    </p-card>
+    </div>
   </div>
 
   <router-outlet></router-outlet>

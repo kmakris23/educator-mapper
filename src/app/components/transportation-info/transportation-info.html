@@ -1,74 +1,140 @@
 <div class="transportation-info">
-  <div *ngIf="!selectedSchool" class="no-selection">
-    Παρακαλώ επιλέξτε ένα σχολείο για να δείτε τις επιλογές μετακίνησης
-    <br>
-    <em>Please select a school to view transportation options</em>
+  <!-- No School Selected State -->
+  <div *ngIf="!selectedSchool" class="text-center py-6 px-4 bg-blue-50 rounded-lg border border-blue-200">
+    <i class="pi pi-info-circle text-blue-500 text-2xl mb-2"></i>
+    <p class="text-blue-700 text-sm">
+      Παρακαλώ επιλέξτε ένα σχολείο για να δείτε τις επιλογές μετακίνησης<br>
+      <span class="italic">Please select a school to view transportation options</span>
+    </p>
   </div>
 
-  <div *ngIf="selectedSchool && isLoading" class="loading">
-    Υπολογισμός διαδρομών... / Calculating routes...
+  <!-- Loading State -->
+  <div *ngIf="selectedSchool && isLoading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+    <p class="text-gray-600 text-sm mt-3">
+      Υπολογισμός διαδρομών... / Calculating routes...
+    </p>
   </div>
 
-  <div *ngIf="selectedSchool && !isLoading && routeInfo" class="route-info">
-    <div class="route-summary">
-      <h4>Πληροφορίες Διαδρομής / Route Information</h4>
-      <div class="route-details">
-        <div><strong>Από / From:</strong> {{ routeInfo.from }}</div>
-        <div><strong>Προς / To:</strong> {{ routeInfo.to }}</div>
-        <div><strong>Απόσταση / Distance:</strong> {{ routeInfo.distance }}</div>
-        <div><strong>Εκτιμώμενος χρόνος / Estimated time:</strong> {{ routeInfo.estimatedTime }}</div>
+  <!-- Route Information -->
+  <div *ngIf="selectedSchool && !isLoading && routeInfo" class="space-y-6">
+    
+    <!-- Route Summary -->
+    <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <h4 class="font-semibold text-blue-800 mb-3">
+        Πληροφορίες Διαδρομής / Route Information
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <div>
+          <span class="font-medium text-blue-700">Από / From:</span>
+          <span class="text-blue-600 ml-1">{{ routeInfo.from }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-blue-700">Προς / To:</span>
+          <span class="text-blue-600 ml-1">{{ routeInfo.to }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-blue-700">Απόσταση / Distance:</span>
+          <span class="text-blue-600 ml-1">{{ routeInfo.distance }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-blue-700">Εκτιμώμενος χρόνος / Estimated time:</span>
+          <span class="text-blue-600 ml-1">{{ routeInfo.estimatedTime }}</span>
+        </div>
       </div>
     </div>
 
-    <div class="transportation-options">
-      <h4>Επιλογές Μετακίνησης / Transportation Options</h4>
+    <!-- Transportation Options -->
+    <div>
+      <h4 class="font-semibold text-gray-900 mb-4">
+        Επιλογές Μετακίνησης / Transportation Options
+      </h4>
       
-      <div *ngIf="transportationOptions.length === 0" class="no-options">
-        Δεν βρέθηκαν επιλογές μετακίνησης / No transportation options found
+      <!-- No Options State -->
+      <div 
+        *ngIf="transportationOptions.length === 0" 
+        class="text-center py-6 px-4 bg-amber-50 rounded-lg border border-amber-200">
+        <i class="pi pi-exclamation-triangle text-amber-500 text-2xl mb-2"></i>
+        <p class="text-amber-700 text-sm">
+          Δεν βρέθηκαν επιλογές μετακίνησης / No transportation options found
+        </p>
       </div>
 
-      <div *ngFor="let option of transportationOptions" class="transport-option">
-        <div class="option-header">
-          <span class="transport-icon">{{ getTransportationIcon(option.type) }}</span>
-          <div class="option-info">
-            <div class="option-name">{{ option.name }}</div>
-            <div class="option-type">{{ getTransportationTypeLabel(option.type) }}</div>
+      <!-- Transportation Options List -->
+      <div *ngFor="let option of transportationOptions" class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+          <div class="flex items-center mb-2 sm:mb-0">
+            <span class="text-2xl mr-3">{{ getTransportationIcon(option.type) }}</span>
+            <div>
+              <div class="font-semibold text-gray-900">{{ option.name }}</div>
+              <div class="text-sm text-gray-600">{{ getTransportationTypeLabel(option.type) }}</div>
+            </div>
           </div>
-          <div class="option-details">
-            <div class="duration">⏱️ {{ option.duration }}</div>
-            <div class="cost" *ngIf="option.cost">💰 {{ option.cost }}</div>
+          <div class="flex flex-col sm:items-end space-y-1 text-sm">
+            <div class="flex items-center text-gray-600">
+              <i class="pi pi-clock mr-1"></i>
+              {{ option.duration }}
+            </div>
+            <div *ngIf="option.cost" class="flex items-center text-gray-600">
+              <i class="pi pi-euro mr-1"></i>
+              {{ option.cost }}
+            </div>
           </div>
         </div>
         
-        <div class="option-description">
+        <div class="text-sm text-gray-700 mb-3">
           {{ option.description }}
         </div>
 
-        <div class="option-route" *ngIf="option.route && option.route.length > 0">
-          <strong>Διαδρομή / Route:</strong>
-          <div class="route-steps">
-            <span *ngFor="let step of option.route; let last = last" class="route-step">
-              {{ step }}<span *ngIf="!last"> → </span>
-            </span>
+        <div *ngIf="option.route && option.route.length > 0" class="text-sm">
+          <div class="font-medium text-gray-900 mb-2">Διαδρομή / Route:</div>
+          <div class="p-3 bg-gray-50 rounded-md">
+            <div class="flex flex-wrap items-center gap-2">
+              <span *ngFor="let step of option.route; let last = last" class="inline-flex items-center">
+                <span class="text-gray-700">{{ step }}</span>
+                <i *ngIf="!last" class="pi pi-arrow-right text-gray-400 mx-2"></i>
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="tips-section">
-      <h4>Συμβουλές / Tips</h4>
-      <ul>
-        <li>Ελέγξτε τα δρομολόγια πριν την αναχώρηση / Check schedules before departure</li>
-        <li>Κρατήστε εφεδρική επιλογή μετακίνησης / Keep a backup transportation option</li>
-        <li>Υπολογίστε επιπλέον χρόνο για απρόβλεπτα / Allow extra time for unexpected delays</li>
-        <li>Χρησιμοποιήστε εφαρμογές για πραγματικό χρόνο / Use apps for real-time information</li>
+    <!-- Tips Section -->
+    <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+      <h4 class="font-semibold text-amber-800 mb-3">
+        <i class="pi pi-lightbulb mr-2"></i>
+        Συμβουλές / Tips
+      </h4>
+      <ul class="space-y-2 text-sm text-amber-700 pl-4">
+        <li class="flex items-start">
+          <span class="w-2 h-2 bg-amber-600 rounded-full flex-shrink-0 mt-2 mr-2"></span>
+          Ελέγξτε τα δρομολόγια πριν την αναχώρηση / Check schedules before departure
+        </li>
+        <li class="flex items-start">
+          <span class="w-2 h-2 bg-amber-600 rounded-full flex-shrink-0 mt-2 mr-2"></span>
+          Κρατήστε εφεδρική επιλογή μετακίνησης / Keep a backup transportation option
+        </li>
+        <li class="flex items-start">
+          <span class="w-2 h-2 bg-amber-600 rounded-full flex-shrink-0 mt-2 mr-2"></span>
+          Υπολογίστε επιπλέον χρόνο για απρόβλεπτα / Allow extra time for unexpected delays
+        </li>
+        <li class="flex items-start">
+          <span class="w-2 h-2 bg-amber-600 rounded-full flex-shrink-0 mt-2 mr-2"></span>
+          Χρησιμοποιήστε εφαρμογές για πραγματικό χρόνο / Use apps for real-time information
+        </li>
       </ul>
     </div>
   </div>
 
-  <div *ngIf="selectedSchool && !isLoading && !routeInfo" class="error">
-    Σφάλμα στον υπολογισμό της διαδρομής. Παρακαλώ δοκιμάστε ξανά.
-    <br>
-    <em>Error calculating route. Please try again.</em>
+  <!-- Error State -->
+  <div 
+    *ngIf="selectedSchool && !isLoading && !routeInfo" 
+    class="text-center py-6 px-4 bg-red-50 rounded-lg border border-red-200">
+    <i class="pi pi-exclamation-circle text-red-500 text-2xl mb-2"></i>
+    <p class="text-red-700 text-sm">
+      Σφάλμα στον υπολογισμό της διαδρομής. Παρακαλώ δοκιμάστε ξανά.<br>
+      <span class="italic">Error calculating route. Please try again.</span>
+    </p>
   </div>
 </div>

@@ -1,35 +1,62 @@
 <div class="municipality-selector">
-  <div *ngIf="!regionId" class="no-selection">
-    Παρακαλώ επιλέξτε πρώτα μια περιοχή / Please select a region first
+  <!-- No Region Selected State -->
+  <div *ngIf="!regionId" class="text-center py-6 px-4 bg-blue-50 rounded-lg border border-blue-200">
+    <i class="pi pi-info-circle text-blue-500 text-2xl mb-2"></i>
+    <p class="text-blue-700 text-sm">
+      Παρακαλώ επιλέξτε πρώτα μια περιοχή / Please select a region first
+    </p>
   </div>
 
-  <div *ngIf="regionId && isLoading" class="loading">
-    Φόρτωση δήμων... / Loading municipalities...
+  <!-- Loading State -->
+  <div *ngIf="regionId && isLoading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+    <p class="text-gray-600 text-sm mt-3">
+      Φόρτωση δήμων... / Loading municipalities...
+    </p>
   </div>
 
-  <div *ngIf="regionId && !isLoading && municipalities.length === 0" class="no-data">
-    Δεν βρέθηκαν δήμοι για την επιλεγμένη περιοχή / No municipalities found for selected region
+  <!-- No Data State -->
+  <div 
+    *ngIf="regionId && !isLoading && municipalities.length === 0" 
+    class="text-center py-6 px-4 bg-amber-50 rounded-lg border border-amber-200">
+    <i class="pi pi-exclamation-triangle text-amber-500 text-2xl mb-2"></i>
+    <p class="text-amber-700 text-sm">
+      Δεν βρέθηκαν δήμοι για την επιλεγμένη περιοχή / No municipalities found for selected region
+    </p>
   </div>
 
-  <div *ngIf="regionId && !isLoading && municipalities.length > 0" class="municipalities-grid">
-    <button 
-      *ngFor="let municipality of municipalities" 
-      class="municipality-card"
-      [class.selected]="isSelected(municipality)"
+  <!-- Municipalities Grid -->
+  <div *ngIf="regionId && !isLoading && municipalities.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <button
+      *ngFor="let municipality of municipalities"
       (click)="selectMunicipality(municipality)"
-      type="button">
+      type="button"
+      class="min-h-[70px] p-3 rounded-lg border-2 transition-all duration-200 text-center hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      [class]="isSelected(municipality) 
+        ? 'bg-green-50 border-green-500 text-green-900' 
+        : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'">
       
-      <div class="municipality-name-greek">{{ municipality.name }}</div>
-      <div class="municipality-name-english">{{ municipality.nameEnglish }}</div>
+      <div class="font-semibold text-sm mb-1">
+        {{ municipality.name }}
+      </div>
+      <div class="text-xs text-gray-500 italic">
+        {{ municipality.nameEnglish }}
+      </div>
       
-      <div *ngIf="isSelected(municipality)" class="selected-indicator">
-        ✓ Επιλεγμένο / Selected
+      <div *ngIf="isSelected(municipality)" class="mt-2 text-xs font-medium text-green-600">
+        <i class="pi pi-check mr-1"></i>
+        Επιλεγμένο / Selected
       </div>
     </button>
   </div>
 
-  <div *ngIf="selectedMunicipality" class="selected-municipality-info">
-    <p><strong>Επιλεγμένος δήμος / Selected municipality:</strong></p>
-    <p>{{ selectedMunicipality.name }} / {{ selectedMunicipality.nameEnglish }}</p>
+  <!-- Selected Municipality Info -->
+  <div 
+    *ngIf="selectedMunicipality" 
+    class="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+    <div class="text-green-800">
+      <strong>Επιλεγμένος δήμος / Selected municipality:</strong><br>
+      {{ selectedMunicipality.name }} / {{ selectedMunicipality.nameEnglish }}
+    </div>
   </div>
 </div>

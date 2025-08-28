@@ -1,14 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { MessageModule } from 'primeng/message';
 import { EducationDataService } from '../../services/education-data';
 import { Region } from '../../models/education-data.models';
 
 @Component({
   selector: 'app-region-selector',
-  imports: [CommonModule, ButtonModule, ProgressSpinnerModule, MessageModule],
+  imports: [CommonModule],
   templateUrl: './region-selector.html',
   styleUrl: './region-selector.scss'
 })
